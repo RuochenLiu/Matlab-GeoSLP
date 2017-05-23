@@ -1,7 +1,7 @@
 # May 2017
 # GeoPlot Function for Sea Level Pressure
 
-![image](Figs/GeoSlp_1.jpg)
+![image](Fig/GeoSlp_1.jpg)
 
 ### Function Description
 
