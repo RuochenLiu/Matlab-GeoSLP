@@ -1,6 +1,40 @@
-%This will generate images and video in subfolder called 'images'!
+function sign = GeoSLP(nc_name, FPS)
 %
-function sign = geospl(nc_name) % Designed for data downloaded from NCEP.
+% GeoSLP is designed to transform and plot sea level pressure data on
+% world map to create a video. GeoSLP reads information of latitude, longtitude,
+% sea level pressure matrix from NC files downloaded from NCEP website, then 
+% converting them into mat files. Use ranges of latitude and longitude to create a
+% part of world map with coastlines for plotting. Plotting is based on raster
+% reference data and geoshow function.
+%
+% INPUT 
+%   'nc_name' is the filename of sea level pressure NC file, which is downloaded
+%   from NCEP website.
+%
+%   'FPS' is the value of fps of video to generate, with default 5.
+% 		
+% OUTPUT 
+%   SeaLevelPressure_Info.mat, which stores information of latitude, longitude, 
+%   sea level pressure values, will be generated under the working directory.
+%
+%   SeaPressure.avi, which stores geo-plot images, will be generated under 
+%   the working directory.
+% 
+% Examples:
+%   GeoSLP('filename.nc', 10);
+%
+%   GeoSLP('filename.nc') under default fps;
+%
+%
+%% AUTHOR    : Ruochen Liu
+%% DATE     : 17-May-2017
+%% Revision : 1.00
+%% DEVELOPED : R2016a
+%% FILENAME  : GeoSLP.m
+%
+    if  nargin < 2,
+        FPS = 5; % Defalut fps value.
+
 	lat = ncread(nc_name, 'lat'); % Read latitdue, longitude and pressure matrix from NC file.
 	lon = ncread(nc_name, 'lon');
 	SeaPressure = ncread(nc_name, 'slp');
@@ -26,14 +60,14 @@ function sign = geospl(nc_name) % Designed for data downloaded from NCEP.
 	crange = prctile(SeaPressure(:) , [1 99]);
 
 	outputVideo = VideoWriter(strcat(pwd,'/SeaPressure.avi'));
-	outputVideo.FrameRate = 5; % Set FPS manually.
+	outputVideo.FrameRate = FPS; % Set FPS.
 	open(outputVideo);
 
 	for i = 1:num_obs,
 
-		disp( strcat( 'generating frame # ', num2str(i) ) );
+		disp( strcat( 'Generating frame # ', num2str(i) ) );
 
-		exp = SeaPressure(:,:,i); % Need transpose for lat*lon.
+		exp = SeaPressure(:,:,i);
 		% FIXME Check the following to see if it does what I assumed it does.
 		R = georasterref('RasterSize', size(exp), 'Latlim', latlim, 'Lonlim', lonlim); % Set up raster reference from dataset.
 		figure('Visible','off','Color','k'); 
