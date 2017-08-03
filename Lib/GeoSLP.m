@@ -32,8 +32,11 @@ function sign = GeoSLP(nc_name, FPS)
 %% DEVELOPED : R2016a
 %% FILENAME  : GeoSLP.m
 %
-    if  nargin < 2,
+    if  nargin < 2
         FPS = 5; % Defalut fps value.
+    else
+        FPS = FPS;
+    end
 
 	lat = ncread(nc_name, 'lat'); % Read latitdue, longitude and pressure matrix from NC file.
 	lon = ncread(nc_name, 'lon');
