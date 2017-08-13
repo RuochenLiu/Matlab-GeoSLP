@@ -52,7 +52,9 @@ function sign = GeoSLP(nc_name, FPS)
     mat_name = 'SeaLevelPressure_Info.mat';
     save(mat_name, 'Dimension', 'Latitude', 'Longitude', 'SeaPressure'); % Save data as mat file.
     
-    
+    t1 = datetime(2012,4,6);
+	t2 = datetime(2014,12,31);
+	dateSeq = t1:t2;
     
 	%imageNames = cell(num_obs,1);
 	%imDirName = strcat(pwd,'/images/');
@@ -71,7 +73,6 @@ function sign = GeoSLP(nc_name, FPS)
 		disp( strcat( 'Generating frame # ', num2str(i) ) );
 
 		exp = SeaPressure(:,:,i);
-		% FIXME Check the following to see if it does what I assumed it does.
 		R = georasterref('RasterSize', size(exp), 'Latlim', latlim, 'Lonlim', lonlim); % Set up raster reference from dataset.
 		figure('Visible','off','Color','k'); 
 		worldmap(latlim, lonlim); % Set up world map.
@@ -82,14 +83,16 @@ function sign = GeoSLP(nc_name, FPS)
 		mesh(peaks);
 		caxis(crange);
 		colormap(parula);
+        title(datestr(dateSeq(i)), 'FontSize', 12);
 
 		fig = gcf;
 		fig.Color = 'white';
 		F = getframe(gcf);
 		writeVideo(outputVideo, F);
+        clf;
 	end
 
 	close(outputVideo);
-	sign = 'Done';
+	disp('Complete');
 
 end
