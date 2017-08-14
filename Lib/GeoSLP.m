@@ -28,7 +28,7 @@ function sign = GeoSLP(nc_name, FPS)
 %
 %% AUTHOR    : Ruochen Liu
 %% DATE     : 17-May-2017
-%% Revision : 1.00
+%% Revision : 2.00
 %% DEVELOPED : R2016a
 %% FILENAME  : GeoSLP.m
 %
@@ -40,6 +40,7 @@ function sign = GeoSLP(nc_name, FPS)
 
 	lat = ncread(nc_name, 'lat'); % Read latitdue, longitude and pressure matrix from NC file.
 	lon = ncread(nc_name, 'lon');
+    t = ncread(nc_name, 'time');
 	SeaPressure = ncread(nc_name, 'slp');
     SeaPressure = permute(SeaPressure, [2 1 3]);
 
@@ -52,8 +53,9 @@ function sign = GeoSLP(nc_name, FPS)
     mat_name = 'SeaLevelPressure_Info.mat';
     save(mat_name, 'Dimension', 'Latitude', 'Longitude', 'SeaPressure'); % Save data as mat file.
     
-    t1 = datetime(2012,4,6);
-	t2 = datetime(2014,12,31);
+    sd = datenum('1800-01-01 00:00:00'); % Start date of data records.
+    t1 = datetime(datestr(sd+min(t)/24));
+	t2 = datetime(datestr(sd+max(t)/24));
 	dateSeq = t1:t2;
     
 	%imageNames = cell(num_obs,1);
