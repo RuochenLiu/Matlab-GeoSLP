@@ -1,4 +1,4 @@
-function sign = GeoSLP(nc_name, FPS)
+function sign = geoslp(nc_name, FPS)
 %
 % GeoSLP is designed to transform and plot sea level pressure data on
 % world map to create a video. GeoSLP reads information of latitude, longtitude,
